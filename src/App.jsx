@@ -1,14 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Body from './components/Body'
+import Login from "./components/Login"
 
 function App() {
-  const [count, setCount] = useState(0)
+  
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Body />,
+      children: [
+        {
+          path: "/home",
+          index: true,
+          element: <Body />
+        },
+        {
+          path: "/login",
+          element: <Login />
+        }
+      ]
+    }
+  ])
 
   return (
     <>
-     <h1 className='text-2xl font-bold'>NetflixGPT</h1>
+     <RouterProvider router={router}/>
     </>
   )
 }
