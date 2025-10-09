@@ -1,15 +1,46 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { LOGIN_BG_IMG } from '../utils/constant';
 import { Link } from 'react-router-dom';
+import {validateForm} from "../utils/validateForm"
 
 function Login() {
   
   const [isLoginForm, setIsLoginForm] = useState(true);
   const [isRemember, setIsRemember] = useState(true);
+  const [error, setError] = useState("");
+
+  const emailRef = useRef(null);
+  const userNameRef = useRef(null);
+  const pwdRef = useRef(null);
+  const confirmPwdRef = useRef(null);
+
 
   const toggleForm = () => {
     setIsLoginForm(!isLoginForm)
   }
+
+  const handleValidation = () => {
+  let errorMessage;
+
+  if (isLoginForm) {
+    errorMessage = validateForm(emailRef.current.value, "", pwdRef.current.value, "");
+  } else {
+    errorMessage = validateForm(
+      emailRef.current.value,
+      userNameRef.current?.value || "",
+      pwdRef.current.value,
+      confirmPwdRef.current?.value || ""
+    );
+  }
+
+  if (errorMessage) {
+    setError(errorMessage);
+  } else {
+    setError("");
+    console.log("Form is valid!");
+  }
+};
+
 
 
   return (
@@ -27,10 +58,11 @@ function Login() {
       <div className="relative z-10 flex justify-center items-center min-h-screen py-10">
         <div className="bg-black bg-opacity-70 p-10 rounded-md w-full max-w-md text-white">
           <h1 className="text-3xl font-semibold mb-6">{isLoginForm ? "Sign In" : "Sign Up"}</h1>
-          <form className="flex flex-col space-y-4">
+          <form className="flex flex-col space-y-4" onSubmit={(e) => e.preventDefault()}>
             {
               !isLoginForm &&
               <input
+              ref={userNameRef}
               type="text"
               name="name"
               placeholder="Full Name"
@@ -38,12 +70,14 @@ function Login() {
             />
             }
             <input
+              ref={emailRef}
               type="text"
               name="user-cred"
-              placeholder="Email or mobile number"
+              placeholder="Email Id"
               className="p-3 rounded-md bg-gray-800 placeholder-gray-400 border border-gray-400"
             />
             <input
+              ref={pwdRef}
               type="password"
               name="password"
               placeholder="Password"
@@ -51,13 +85,16 @@ function Login() {
             />
 
             {!isLoginForm && <input
+              ref={confirmPwdRef}
               type="password"
               name="password"
               placeholder="Confirm password"
               className="p-3 rounded-md bg-gray-800 placeholder-gray-400 border border-gray-400"
             />}
 
-            <button className="bg-red-600 hover:bg-red-700 p-3 rounded-md font-semibold cursor-pointer">
+            <p className='py-4 m-4 text-xl text-red-500'>{error}</p>
+
+            <button className="bg-red-600 hover:bg-red-700 p-3 rounded-md font-semibold cursor-pointer" onClick={handleValidation}>
               {isLoginForm? "Sign In" : "Sign Up"}
             </button>
 
