@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import { LOGIN_BG_IMG } from '../utils/constant';
 import { Link } from 'react-router-dom';
 import {validateForm} from "../utils/validateForm"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import {auth} from "../utils/firebase"
 
 function Login() {
   
@@ -35,10 +37,41 @@ function Login() {
 
   if (errorMessage) {
     setError(errorMessage);
+    return
   } else {
     setError("");
-    console.log("Form is valid!");
+    if(!isLoginForm){
+      //Signup logic
+     createUserWithEmailAndPassword(auth, emailRef.current.value, pwdRef.current.value)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log("User signed up: ", user);
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setError(errorMessage + " " + errorCode);
+  });
+    }else{
+      //Login logic
+      signInWithEmailAndPassword(auth, emailRef.current.value, pwdRef.current.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    // ...
+    console.log("User logged in: ", user);
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setError(errorMessage + " " + errorCode);
+  });
+
+    }
   }
+
 };
 
 
