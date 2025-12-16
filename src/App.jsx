@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Body from './components/Body'
-import Login from "./components/Login"
+import Login from './components/Login'
+import Browse from './components/Browse'
+import Body from "./components/Body"
 
 function App() {
   
@@ -10,22 +11,19 @@ function App() {
       element: <Body />,
       children: [
         {
-          path: "/home",
           index: true,
-          element: <Body />
+          element: <Login />
         },
         {
-          path: "/login",
-          element: <Login />
+          path: "browse",
+          element: <Browse />
         }
       ]
     }
   ])
 
   return (
-    <>
      <RouterProvider router={router}/>
-    </>
   )
 }
 

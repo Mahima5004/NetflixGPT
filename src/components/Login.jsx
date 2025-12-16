@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {validateForm} from "../utils/validateForm"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import {auth} from "../utils/firebase"
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   
@@ -15,6 +16,7 @@ function Login() {
   const userNameRef = useRef(null);
   const pwdRef = useRef(null);
   const confirmPwdRef = useRef(null);
+  const navigate = useNavigate();
 
 
   const toggleForm = () => {
@@ -47,6 +49,8 @@ function Login() {
     // Signed up 
     const user = userCredential.user;
     console.log("User signed up: ", user);
+    navigate("/browse")
+    
     // ...
   })
   .catch((error) => {
@@ -62,6 +66,7 @@ function Login() {
     const user = userCredential.user;
     // ...
     console.log("User logged in: ", user);
+    navigate("/browse")
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -86,8 +91,6 @@ function Login() {
       />
       {/* Dark overlay */}
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60"></div>
-
-      
       <div className="relative z-10 flex justify-center items-center min-h-screen py-10">
         <div className="bg-black bg-opacity-70 p-10 rounded-md w-full max-w-md text-white">
           <h1 className="text-3xl font-semibold mb-6">{isLoginForm ? "Sign In" : "Sign Up"}</h1>
