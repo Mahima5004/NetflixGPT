@@ -11,6 +11,12 @@ Steps followed:
 - Implement sign in user api
 - Created Redux store and userSlice
 - Add user to our store on user sign up, user sign in , user sign out(instead of calling useDispatch thrice we can use onAuthStateChanged by firebase which will execute in call this cases)
+- Adding all the navigation related to browse and login page inside onAuthStateChanged calling since it executes with each sign in and sign out
+- Unsubscribing to onAuthStateChanged once our body component unmounts
+- Added hardcoded values inside the constants file
+- Register to TMDB and create an app and get the api key
+- Go through now playing api on TMDB and use it in the browser page
+- Create slice for now playing movies and add it's reducer in appStore 
 
 
 

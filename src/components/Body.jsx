@@ -9,19 +9,23 @@ import {addUser,removeUser} from "../utils/userSlice"
 
 function Body() {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  
 
+  //every time user sign in or sign out this onAuthStateChanged will get called so I am handling navigation from here only
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if(user){
         const {uid, email, displayName} = user;
         dispatch(addUser({uid: uid, email: email, displayName: displayName}));
-        // navigate("/browse");
+        navigate("/browse");
       }else{
         dispatch(removeUser())
-        // navigate("/")
+        navigate("/")
       }
     })
+
+    return () => unsubscribe(); //once my component unmounts i want to unsubscribe onAuthStateChanged service which is returned by itself
   },[])
 
   return (

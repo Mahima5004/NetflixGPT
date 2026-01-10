@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import {validateForm} from "../utils/validateForm"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import {auth} from "../utils/firebase"
-import { useNavigate } from 'react-router-dom';
+
 
 function Login() {
   
@@ -16,7 +16,7 @@ function Login() {
   const userNameRef = useRef(null);
   const pwdRef = useRef(null);
   const confirmPwdRef = useRef(null);
-  const navigate = useNavigate();
+ 
 
 
   const toggleForm = () => {
@@ -49,7 +49,7 @@ function Login() {
     // Signed up 
     const user = userCredential.user;
     console.log("User signed up: ", user);
-    navigate("/browse")
+   
     
     // ...
   })
@@ -66,7 +66,7 @@ function Login() {
     const user = userCredential.user;
     // ...
     console.log("User logged in: ", user);
-    navigate("/browse")
+   
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -82,17 +82,12 @@ function Login() {
 
 
   return (
-    <div className="relative min-h-screen w-full">
-      {/* Background image */}
-      <img
-        src={LOGIN_BG_IMG}
-        alt="Background"
-        className="absolute top-0 left-0 w-full h-full"
-      />
-      {/* Dark overlay */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60"></div>
-      <div className="relative z-10 flex justify-center items-center min-h-screen py-10">
-        <div className="bg-black bg-opacity-70 p-10 rounded-md w-full max-w-md text-white">
+    <div className="relative min-h-screen w-full overflow-y-hidden">
+    <img src={LOGIN_BG_IMG} alt="Background"
+         className="absolute top-0 left-0 w-full h-full object-cover" />
+    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-60 pointer-events-none"></div>
+    <div className="relative z-10 flex justify-center items-center min-h-screen px-4 pt-10">
+      <div className="bg-black bg-opacity-70 p-6 rounded-md w-full max-w-sm text-white">
           <h1 className="text-3xl font-semibold mb-6">{isLoginForm ? "Sign In" : "Sign Up"}</h1>
           <form className="flex flex-col space-y-4" onSubmit={(e) => e.preventDefault()}>
             {
@@ -128,7 +123,7 @@ function Login() {
               className="p-3 rounded-md bg-gray-800 placeholder-gray-400 border border-gray-400"
             />}
 
-            <p className='py-4 m-4 text-xl text-red-500'>{error}</p>
+            {error && <p className='py-4 m-4 text-xl text-red-500'>{error}</p>}
 
             <button className="bg-red-600 hover:bg-red-700 p-3 rounded-md font-semibold cursor-pointer" onClick={handleValidation}>
               {isLoginForm? "Sign In" : "Sign Up"}
